@@ -1,9 +1,5 @@
 #include <stdio.h>
 
-#define true 1
-#define false 0
-typedef int bool;
-
 /*#################################################################
 #   Программа считывает с стандартного потока ввода все, что ей   #
 #   построчно ввели, после чего построчно удаляет повторяющиеся   #
@@ -13,30 +9,28 @@ typedef int bool;
 int main(int argc, char** argv)
 {
     int c; // Символ
-    bool Space = false; // Флаг на наличие пробела
 
     while ((c = getchar()) != EOF)
     {
         if (c != '\n')
         {
-            if ((c == ' ') && (Space == false)) // Если пробел встретился впервые
+            if (c != ' ') putchar(c); // Просто печатаем, если нет пробела
+            else 
             {
-                Space = true; 
-                putchar(' ');
-            } 
-
-            if ((c == ' ') && (Space == true)) continue; // Если пробел встретился более одного раза
-
-            if ((c != ' ') && (Space == true)) Space = false; // Если после последнего пробела не пробел
-
-            putchar(c);
+                putchar(c); // Если все же пробел встретился, печатаем его
+                
+                while ((c = getchar()) != EOF) // Берем следующий символ
+                {
+                    if (c != ' ') 
+                    {
+                        putchar(c); // Печатаем его, если не пробел
+                        break;
+                    }
+                }
+            }
         }
 
-        else 
-        {
-            printf("\n");
-            Space = false;
-        }
+        else printf("\n");
     }
 
     return 0;
